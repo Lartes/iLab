@@ -39,9 +39,12 @@ int main(){
     double a=0,b=0,c=0;
     int am_root=2;  //q=0 - no, 1 - one, 2 - two, -1 - any
     float x1=0,x2=0,d=0;
+
     printf("Enter the coefficients of the quadratic equation ax^2+bx+c=0\n");
     scanf("%lg %lg %lg",&a,&b,&c);  //Input variables
+
     kvad(a,b,c,&x1,&x2,&am_root);
+
     switch(am_root){
         case 0: printf("The equation has no roots");  //Output
         break;
@@ -54,5 +57,6 @@ int main(){
         default: printf("Error");
         break;
     }
+
     return 0;
 }
