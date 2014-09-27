@@ -1,7 +1,7 @@
 #include"solve_sqr.h"
 
 /**
-@mainpage Программа для решения квадратного уравнения
+@mainpage Program for solving the quadratic equation
 */
 
 int main(){
