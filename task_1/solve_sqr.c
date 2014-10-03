@@ -1,5 +1,3 @@
-#ifndef solve_sqrC
-#define solve_sqrC
 #include"solve_sqr.h"
 
 void solve_sqr(double a,double b,double c,double *x1,double *x2, int *root_amount){
@@ -49,5 +47,3 @@ switch(root_amount){
         break;
     }
 }
-
-#endif
