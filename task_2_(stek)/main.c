@@ -1,6 +1,7 @@
 #include<stdio.h>
+#include<stdlib.h>
 #include<stdbool.h>
-#include"stek.h"
+#include"stack.h"
 
 enum{
     PUSH=1,
@@ -9,10 +10,10 @@ enum{
     EXIT,
 };
 
-void main(){
-    struct item *stek;
+int main(){
+    struct item *stack=NULL;  //initialization is required for assert
     int new_element, user_choise;
-    creat_stek(&stek);
+    create_stack(&stack);
     do{
     printf("************\n");
     printf("1 - Push\n");
@@ -24,20 +25,20 @@ void main(){
     switch (user_choise){
     case PUSH: printf("Enter element\n");
             scanf("%d",&new_element);
-            push_stek(&stek, new_element);
+            push_stack(&stack, new_element);
             break;
-    case POP: if (!isEmpty_stek(stek)){
-                printf("_________________%d\n", pop_stek(&stek));
+    case POP: if (!isEmpty_stack(stack)){
+                printf("_________________%d\n", pop_stack(&stack));
                 }
             else{
-                printf("_________________Stek is empty\n");
+                printf("_________________Stack is empty\n");
             }
             break;
-    case COUNT: printf("______%d\n",getCount_stek(stek));
+    case COUNT: printf("______%d\n",getCount_stack(stack));
                 break;
-    case EXIT: delete_stek(&stek);
+    case EXIT: delete_stack(&stack);
                break;
     };
     } while (user_choise!=EXIT);
-
+    return 0;
 }
