@@ -32,13 +32,13 @@ int main(){
     myStack_delete(&stack);
     return 0;
 }
-/*Комментарии по стеку:
-1. после myStack_delete со стеком можно продолжать работать
-2. myStack_top от пустого стека выбивает программу
-3. myStack_push в пустой стек выбивает программу
-4. myStack_pop от пустого стека выбивает программу
-5. из пустого стека всегда вытаскивается -1
-6. нет функции stack_count; вместо этого нужно делать stack.number, но пришлось вникать в конструкцию стека, чтобы это выяснить!
-7. нельзя быстро поменять тип данных в стеке (опять пришлось разбираться, что и где менять)
-8. нет пояснений по функциям, их аргументам и возвращаемым значениям
+/* Comments about stack:
+1. after myStack_delete stack can continue work
+2. myStack_top from an empty stack knocks program
+3. myStack_push from an empty stack knocks program
+4. myStack_pop from an empty stack knocks program
+5. empty stack always poped -1
+6. no function stack_count; instead it you need to do stack.number, but I had to delve into the design of the stack to understand it!
+7. can't easily change the data type of the stack (again I had to understand what and where change)
+8. no explanatory note about functions, their arguments and return values
 */
