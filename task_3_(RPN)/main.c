@@ -22,7 +22,9 @@ int main(){
             case PLUS: myStack_push(&stack, b+a); break;
             case MINUS: myStack_push(&stack, b-a); break;
             case MULT: myStack_push(&stack, b*a); break;
-            case DIV: myStack_push(&stack, (double)b/a); break;
+            case DIV: if (a!=0) myStack_push(&stack, (double)b/a);
+                        else {printf("You try to divided by zero!"); exit(0);}
+                      break;
             case INCORRECT_SYMBOL: printf("You typed incorrect symbol!"); exit(0); break;
             case ERROR: printf("Your expression is incorrect!"); exit(0); break; // if the number of arguments is not enough for operations
         };
