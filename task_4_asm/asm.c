@@ -10,52 +10,72 @@ int main(){
     double input_data_doub;
     char input_data_str[10];
     int status;
+    double cr;
 
     FILE *input=NULL, *output=NULL;
     if ((input=fopen("input.txt", "r"))==NULL)
-        {printf("Cannot open file"); close;}
+        {printf("Cannot open file\n"); close;}
     if ((output=fopen("output.txt", "w"))==NULL)
-        {printf("Cannot open file"); close;}
+        {printf("Cannot open file\n"); close;}
 
     while (fscanf(input,"%s",input_data_str)!=EOF){
         status=0;
         if (!stricmp(input_data_str,"push")){
-            fprintf(output,"%d ",PUSH);
+            cr=PUSH;
+            fwrite(&cr,sizeof(double),1,output);
             if (fscanf(input,"%lf",&input_data_doub)>0)
-                fprintf(output,"%lf\n",input_data_doub);
+                fwrite(&input_data_doub,sizeof(double),1,output);
             else
                 {printf("Incorrect command argument\n"); close;}
             status=1;
+            *input_data_str='q';
         }
         if (!stricmp(input_data_str,"add")){
-            fprintf(output,"%d\n",ADD);
+            cr=ADD;
+            fwrite(&cr,sizeof(double),1,output);
             status=1;
         }
         if (!stricmp(input_data_str,"mul")){
-            fprintf(output,"%d\n",MUL);
+            cr=MUL;
+            fwrite(&cr,sizeof(double),1,output);
+            status=1;
+        }
+        if (!stricmp(input_data_str,"pop_ax")){
+            cr=POP_AX;
+            fwrite(&cr,sizeof(double),1,output);
+            status=1;
+        }
+        if (!stricmp(input_data_str,"push_ax")){
+            cr=PUSH_AX;
+            fwrite(&cr,sizeof(double),1,output);
             status=1;
         }
         if (!stricmp(input_data_str,"out")){
-            fprintf(output,"%d\n",OUT);
+            cr=OUT;
+            fwrite(&cr,sizeof(double),1,output);
             status=1;
         }
         if (!stricmp(input_data_str,"end")){
-            fprintf(output,"%d\n",END);
+            cr=END;
+            fwrite(&cr,sizeof(double),1,output);
             status=1;
         }
         if (!stricmp(input_data_str,"jmp")){
-            fprintf(output,"%d ",JMP);
+            cr=JMP;
+            fwrite(&cr,sizeof(double),1,output);
             if (fscanf(input,"%lf",&input_data_doub)>0)
-                fprintf(output,"%lf\n",input_data_doub);
+                fwrite(&input_data_doub,sizeof(double),1,output);
             else
                 {printf("Incorrect command argument\n"); close;}
             status=1;
+            *input_data_str='q';
         }
-        if (!status) {printf("Incorrect command"); close;}
+        if (!status) {printf("Incorrect command\n"); close;}
 
     }
 
     fclose(input);
     fclose(output);
+    return 0;
 }
 

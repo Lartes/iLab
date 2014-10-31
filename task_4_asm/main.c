@@ -14,12 +14,14 @@ int main(){
     struct item *stack=NULL; //stack for calculations
     create_stack(&stack);
 
+    type regAX; //register
+
     remove("result.txt"); //file to display the results
 
     FILE *input=NULL; //file with input data
     if ((input=fopen("output.txt", "r"))==NULL)
         {printf("Can not open file"); exit(0);}
-    while ((status=fscanf(input,"%lf",&data))>0 && data!=END){ //reading input data
+    while ((status=fread(&data,sizeof(double),1,input))>0 && data!=END){ //reading input data
         input_data[i]=data;
         i++;
         if (i>=size) input_data=(double*)realloc(input_data,size+=100);
@@ -34,11 +36,13 @@ int main(){
     input_data0=input_data;
     while (*input_data!=END){ //processing the input data
         if (abs(*input_data-(int)*input_data)>0.00001) //incorrect command
-            {printf("Logical error"); exit(0);}
+            {printf("Logical error or incorrect input"); exit(0);}
         switch ((int)*input_data){
         case PUSH: push(&stack,*(++input_data)); break;
         case ADD: add(&stack);  break;
         case MUL: mul(&stack);  break;
+        case POP_AX: popReg(&stack, &regAX);  break;
+        case PUSH_AX: pushReg(&stack, regAX);  break;
         case OUT: out(&stack);  break;
         case JMP: *input_data=END;  //for prevent an infinite loop
                   input_data=jmp(input_data0,(int)*(++input_data));
@@ -51,4 +55,5 @@ int main(){
 
     free(input_data0); //NOT input_data!!!
     delete_stack(&stack);
+    return 0;
 }

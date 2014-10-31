@@ -15,15 +15,19 @@ int isNum(char *s){
 }
 
 void close(FILE* input, FILE* output){
-    fclose(input);
-    fclose(output);
+    if (input!=NULL)
+        fclose(input);
+    if (output!=NULL)
+        fclose(output);
     remove("output.txt");
     exit(0);
 }
 
 void closeD(FILE* input, FILE* output){
-    fclose(input);
-    fclose(output);
+    if (input!=NULL)
+        fclose(input);
+    if (output!=NULL)
+        fclose(output);
     remove("input.txt");
     exit(0);
 }

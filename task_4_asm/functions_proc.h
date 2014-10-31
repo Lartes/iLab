@@ -10,6 +10,8 @@ enum{
     PUSH=1,
     ADD,
     MUL,
+    POP_AX,
+    PUSH_AX,
     OUT,
     END,
     JMP
@@ -22,6 +24,10 @@ int push(struct item **stack, type new_element);
 int add(struct item **stack);
 
 int mul(struct item **stack);
+
+int popReg(struct item **stack,type *reg);
+
+int pushReg(struct item **stack,type reg);
 
 int out(struct item **stack);
 
