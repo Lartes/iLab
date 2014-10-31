@@ -27,3 +27,18 @@ void closeD(FILE* input, FILE* output){
     remove("input.txt");
     exit(0);
 }
+
+int stricmp(const char *s1, const char *s2){
+    int i, min;
+    char a,b;
+    if (strlen(s1)>=strlen(s2)) min=strlen(s2); else min=strlen(s1);
+    for (i=0;i<=min-1;i++) {a=s1[i]; b=s2[i];
+                        if (a>='A' && a<='Z') a=(char)tolower(a);
+                        if (b>='A' && b<='Z') b=(char)tolower(b);
+                        if (a>b) return 1;
+                        else if (a<b) return -1;
+    }
+    if (strlen(s1)>strlen(s2)) return 1;
+    if (strlen(s1)<strlen(s2)) return -1;
+    return 0;
+}

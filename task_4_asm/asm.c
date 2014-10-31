@@ -19,7 +19,7 @@ int main(){
 
     while (fscanf(input,"%s",input_data_str)!=EOF){
         status=0;
-        if (!strcmp(input_data_str,"push")){
+        if (!stricmp(input_data_str,"push")){
             fprintf(output,"%d ",PUSH);
             if (fscanf(input,"%lf",&input_data_doub)>0)
                 fprintf(output,"%lf\n",input_data_doub);
@@ -27,23 +27,23 @@ int main(){
                 {printf("Incorrect command argument\n"); close;}
             status=1;
         }
-        if (!strcmp(input_data_str,"add")){
+        if (!stricmp(input_data_str,"add")){
             fprintf(output,"%d\n",ADD);
             status=1;
         }
-        if (!strcmp(input_data_str,"mul")){
+        if (!stricmp(input_data_str,"mul")){
             fprintf(output,"%d\n",MUL);
             status=1;
         }
-        if (!strcmp(input_data_str,"out")){
+        if (!stricmp(input_data_str,"out")){
             fprintf(output,"%d\n",OUT);
             status=1;
         }
-        if (!strcmp(input_data_str,"end")){
+        if (!stricmp(input_data_str,"end")){
             fprintf(output,"%d\n",END);
             status=1;
         }
-        if (!strcmp(input_data_str,"jmp")){
+        if (!stricmp(input_data_str,"jmp")){
             fprintf(output,"%d ",JMP);
             if (fscanf(input,"%lf",&input_data_doub)>0)
                 fprintf(output,"%lf\n",input_data_doub);
