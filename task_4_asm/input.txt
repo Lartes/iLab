@@ -1,0 +1,39 @@
+push 0.000000
+push 10.000000
+pop_bx
+	two:
+	push_bx
+	pop_ax
+	push 1.000000
+		1:
+		push_ax
+		mul
+
+		push_ax
+		push -1.000000
+		add
+		pop_ax
+		push_ax
+		jnz :1
+	out
+	add
+
+	push_bx
+	push -1.000000
+	add
+	pop_bx
+	push_bx
+	jnz :two
+out
+
+push 4037913
+cmp
+jz :3
+push 0
+out
+jmp :4
+3:
+push 1
+out
+4:
+end
