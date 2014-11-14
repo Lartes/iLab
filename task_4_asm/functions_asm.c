@@ -14,12 +14,13 @@ int isNum(char *s){
     return 0;
 }
 
-void close(FILE* input, FILE* output, char output_name[20]){
+void close(FILE* input, FILE* output, char output_name[20], struct label *mas_label){
     if (input!=NULL)
         fclose(input);
     if (output!=NULL)
         fclose(output);
     remove(output_name);
+    free(mas_label);
     exit(0);
 }
 
@@ -41,7 +42,7 @@ int stricmp(const char *s1, const char *s2){
 int addres_label(struct label *mas_label, int size, char input_data_str[10]){
     int i;
     for (i=0;i<=size-1;i++){
-        if (strcmp((mas_label[i]).name, input_data_str)==0) return (mas_label[i]).addres;
+        if (strncmp((mas_label[i]).name, input_data_str,strlen(input_data_str)-1)==0) return (mas_label[i]).addres;
     }
     return -1;
 }
@@ -55,6 +56,8 @@ char* label_addres(struct label *mas_label, int size, int addres){
 }
 
 int jumpASM(FILE* input, FILE* output, struct label *mas_label, int size){
+    static int n=0;
+    n++;
     double input_data_doub;
     char input_data_str[10];
 
@@ -62,19 +65,21 @@ int jumpASM(FILE* input, FILE* output, struct label *mas_label, int size){
     if (fscanf(input,"%[:]",input_data_str)==1){  //if JMP with label     почему при считывании * fscanf выдаёт 0 вместо 1???
         if (fscanf(input,"%s",input_data_str)!=EOF){
             if ((input_data_doub=addres_label(mas_label,size,input_data_str))==-1)
-                {printf("Incorrect command argument in JMP_label\n"); return 0;}
+                {printf("Incorrect command argument in JMP_label(%d - %s)\n",n,input_data_str); return 0;}
             fwrite(&input_data_doub,sizeof(double),1,output);
         }
     } else{                                    //if JMP without label
         if (fscanf(input,"%lf",&input_data_doub)>0)
             fwrite(&input_data_doub,sizeof(double),1,output);
         else
-            {printf("Incorrect command argument in JMP\n"); return 0;}
+            {printf("Incorrect command argument in JMP(%d)\n",n); return 0;}
     }
     return 1;
 }
 
 int jumpDISASM(FILE* input, FILE* output, struct label *mas_label, int size){
+    static int n=0;
+    n++;
     double input_data_d;
 
     if (fread(&input_data_d,sizeof(double),1,input)>0)
@@ -83,6 +88,6 @@ int jumpDISASM(FILE* input, FILE* output, struct label *mas_label, int size){
         else
             fprintf(output,"%lf\n",input_data_d);
     else
-        {printf("Incorrect command argument\n"); return 0;}
+        {printf("Incorrect command argument(%d)\n",n); return 0;}
     return 1;
 }

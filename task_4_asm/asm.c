@@ -4,7 +4,7 @@
 #include"functions_proc.h"
 #include"functions_asm.h"
 
-#define close close(input,output,output_name)//ALL FUNCTIONS AND ARGUMENTS OF FUNCTIONS MUST SEPARATED BY ONE SPACE AT LEAST
+#define close close(input,output,output_name,mas_label)//ALL FUNCTIONS AND ARGUMENTS OF FUNCTIONS MUST SEPARATED BY ONE SPACE AT LEAST
 
 int main(int argv, char* argc[]){
 
@@ -37,16 +37,17 @@ int main(int argv, char* argc[]){
 
 
     //searching for labels
+    i=0;
     while (fscanf(input,"%s",input_data_str)!=EOF){
         addres++;
         if (input_data_str[strlen(input_data_str)-1]==':'){
-            if ((input_data_doub=addres_label(mas_label,size,input_data_str))!=-1)
-                {printf("Duplication label"); close;}
+            if ((input_data_doub=addres_label(mas_label,i,input_data_str))!=-1)
+                {printf("Duplication label\n"); close;}
             addres--;
             strncpy((mas_label[i]).name, input_data_str, strlen(input_data_str)-1);
             (mas_label[i]).addres=addres;
             i++;
-            if (i>=size) mas_label=(struct label*)realloc(mas_label,size+=5);
+            if (i==size) mas_label=(struct label*)realloc(mas_label,(size+=5)*sizeof(struct label));
         }
     }
     size=i; //number of labels
@@ -65,7 +66,7 @@ int main(int argv, char* argc[]){
         {printf("Cannot write system file\n"); close;}
     fprintf(input, "%d\n", size);
     for (i=0;i<=size-1;i++){
-        fprintf(input, "%s %d\n", (mas_label[i]).name, (mas_label[i]).addres);
+        fprintf(input,"%s %d\n", (mas_label[i]).name, (mas_label[i]).addres);
     }
     fclose(input);
 
@@ -81,8 +82,9 @@ int main(int argv, char* argc[]){
         if (!stricmp(input_data_str,"push")){    //stricmp - compare strings without register
             wr=PUSH;
             fwrite(&wr,sizeof(double),1,output);
-            if (fscanf(input,"%lf",&input_data_doub)>0)
+            if (fscanf(input,"%lf",&input_data_doub)>0){ //КАК ОН ПРЕОБРАЗУЕТ INFINITY и NAN
                 fwrite(&input_data_doub,sizeof(double),1,output);
+            }
             else
                 {printf("Incorrect command argument in PUSH\n"); close;}
             status=1;
@@ -93,8 +95,23 @@ int main(int argv, char* argc[]){
             fwrite(&wr,sizeof(double),1,output);
             status=1;
         }
+        if (!stricmp(input_data_str,"sub")){
+            wr=SUB;
+            fwrite(&wr,sizeof(double),1,output);
+            status=1;
+        }
         if (!stricmp(input_data_str,"mul")){
             wr=MUL;
+            fwrite(&wr,sizeof(double),1,output);
+            status=1;
+        }
+        if (!stricmp(input_data_str,"div")){
+            wr=DIV;
+            fwrite(&wr,sizeof(double),1,output);
+            status=1;
+        }
+        if (!stricmp(input_data_str,"sqrt")){
+            wr=SQRT;
             fwrite(&wr,sizeof(double),1,output);
             status=1;
         }
@@ -118,6 +135,26 @@ int main(int argv, char* argc[]){
             fwrite(&wr,sizeof(double),1,output);
             status=1;
         }
+        if (!stricmp(input_data_str,"pop_cx")){
+            wr=POP_CX;
+            fwrite(&wr,sizeof(double),1,output);
+            status=1;
+        }
+        if (!stricmp(input_data_str,"push_cx")){
+            wr=PUSH_CX;
+            fwrite(&wr,sizeof(double),1,output);
+            status=1;
+        }
+        if (!stricmp(input_data_str,"pop_dx")){
+            wr=POP_DX;
+            fwrite(&wr,sizeof(double),1,output);
+            status=1;
+        }
+        if (!stricmp(input_data_str,"push_dx")){
+            wr=PUSH_DX;
+            fwrite(&wr,sizeof(double),1,output);
+            status=1;
+        }
         if (!stricmp(input_data_str,"out")){
             wr=OUT;
             fwrite(&wr,sizeof(double),1,output);
@@ -131,7 +168,7 @@ int main(int argv, char* argc[]){
         if (!stricmp(input_data_str,"jmp")){
             wr=JMP;
             fwrite(&wr,sizeof(double),1,output);
-            if (!jumpASM(input, output, mas_label, size)) close;
+            if (!jumpASM(input, output, mas_label, size)) close; //reading label and convert it
             status=1;
         }
         if (!stricmp(input_data_str,"jz")){
@@ -146,17 +183,47 @@ int main(int argv, char* argc[]){
             if (!jumpASM(input, output, mas_label, size)) close;
             status=1;
         }
+        if (!stricmp(input_data_str,"je")){
+            wr=JE;
+            fwrite(&wr,sizeof(double),1,output);
+            if (!jumpASM(input, output, mas_label, size)) close;
+            status=1;
+        }
+        if (!stricmp(input_data_str,"jl")){
+            wr=JL;
+            fwrite(&wr,sizeof(double),1,output);
+            if (!jumpASM(input, output, mas_label, size)) close;
+            status=1;
+        }
+        if (!stricmp(input_data_str,"jg")){
+            wr=JG;
+            fwrite(&wr,sizeof(double),1,output);
+            if (!jumpASM(input, output, mas_label, size)) close;
+            status=1;
+        }
         if (!stricmp(input_data_str,"cmp")){
             wr=CMP;
             fwrite(&wr,sizeof(double),1,output);
             status=1;
         }
-        if (!status && input_data_str[strlen(input_data_str)-1]!=':') {printf("Incorrect command\n"); close;}
+        if (!stricmp(input_data_str,"call")){
+            wr=CALL;
+            fwrite(&wr,sizeof(double),1,output);
+            if (!jumpASM(input, output, mas_label, size)) close; //reading label and convert it
+            status=1;
+        }
+        if (!stricmp(input_data_str,"ret")){
+            wr=RET;
+            fwrite(&wr,sizeof(double),1,output);
+            status=1;
+        }
+        if (!status && input_data_str[strlen(input_data_str)-1]!=':') {printf("Incorrect command (%s)\n",input_data_str); close;}
 
     }
 
 
     //close all files
+    free(mas_label);
     fclose(input);
     fclose(output);
     return 0;

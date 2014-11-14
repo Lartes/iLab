@@ -4,7 +4,7 @@
 #include"functions_proc.h"
 #include"functions_asm.h"
 
-#define close close(input,output,output_name)
+#define close close(input,output,output_name,mas_label)
 
 int main(int argv, char* argc[]){
 
@@ -13,6 +13,7 @@ int main(int argv, char* argc[]){
     double input_data;
     int status, i, size, addres=0;
     char input_name[20], output_name[20], sys[20];
+    struct label *mas_label=(struct label*)calloc(1,sizeof(struct label));
     FILE *input=NULL, *output=NULL;
 
 
@@ -43,7 +44,7 @@ int main(int argv, char* argc[]){
     if ((input=fopen(sys, "r"))==NULL)  //reading system file
         {printf("Cannot read system file\n"); close;}
     fscanf(input,"%d", &size);
-    struct label *mas_label=(struct label*)calloc(size,sizeof(struct label));
+    mas_label=(struct label*)realloc(mas_label,size*sizeof(struct label));
     for (i=0;i<=size-1;i++){
         fscanf(input,"%s %d", (mas_label[i]).name, &((mas_label[i]).addres));
     }
@@ -76,8 +77,20 @@ int main(int argv, char* argc[]){
             fprintf(output,"add\n");
             status=1;
         }
+        if (input_data==SUB){
+            fprintf(output,"sub\n");
+            status=1;
+        }
         if (input_data==MUL){
             fprintf(output,"mul\n");
+            status=1;
+        }
+        if (input_data==DIV){
+            fprintf(output,"div\n");
+            status=1;
+        }
+        if (input_data==SQRT){
+            fprintf(output,"sqrt\n");
             status=1;
         }
         if (input_data==POP_AX){
@@ -94,6 +107,22 @@ int main(int argv, char* argc[]){
         }
         if (input_data==PUSH_BX){
             fprintf(output,"push_bx\n");
+            status=1;
+        }
+        if (input_data==POP_CX){
+            fprintf(output,"pop_cx\n");
+            status=1;
+        }
+        if (input_data==PUSH_CX){
+            fprintf(output,"push_cx\n");
+            status=1;
+        }
+        if (input_data==POP_DX){
+            fprintf(output,"pop_dx\n");
+            status=1;
+        }
+        if (input_data==PUSH_DX){
+            fprintf(output,"push_dx\n");
             status=1;
         }
         if (input_data==OUT){
@@ -122,16 +151,45 @@ int main(int argv, char* argc[]){
             addres++;
             status=1;
         }
+        if (input_data==JE){
+            fprintf(output,"je ");
+            if (!jumpDISASM(input, output, mas_label, size)) close;
+            addres++;
+            status=1;
+        }
+        if (input_data==JL){
+            fprintf(output,"jl ");
+            if (!jumpDISASM(input, output, mas_label, size)) close;
+            addres++;
+            status=1;
+        }
+        if (input_data==JG){
+            fprintf(output,"jg ");
+            if (!jumpDISASM(input, output, mas_label, size)) close;
+            addres++;
+            status=1;
+        }
         if (input_data==CMP){
             fprintf(output,"cmp\n");
             status=1;
         }
-        if (!status) {printf("Incorrect command\n"); close;}
+        if (input_data==CALL){
+            fprintf(output,"call ");
+            if (!jumpDISASM(input, output, mas_label, size)) close;
+            addres++;
+            status=1;
+        }
+        if (input_data==RET){
+            fprintf(output,"ret\n");
+            status=1;
+        }
+        if (!status) {printf("Incorrect command (%lf)\n",input_data); close;}
         addres++;
     }
 
 
     //close all files
+    free(mas_label);
     fclose(input);
     fclose(output);
     return 0;

@@ -15,7 +15,7 @@ int isNumF(char *s);
 
 int isNum(char *s);
 
-void close(FILE* input, FILE* output, char output_name[20]); //close program after error
+void close(FILE* input, FILE* output, char output_name[20], struct label *mas_label); //close program after error
 
 int stricmp(const char *s1, const char *s2); //compare strings without register
 
