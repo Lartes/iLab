@@ -1,7 +1,7 @@
 #include"functions_proc.h"
 
 void stop(FILE* input, char output_name[20], double *input_data, double *input_data0, struct item **stack,  struct item **stack_func){
-    if (input!=NULL)
+    if (input!=NULL)               //некорректное завершение при некорректном окончании файла!!!!
         fclose(input);
     remove(output_name);
     if (input_data0==NULL)
@@ -74,7 +74,7 @@ int sqrt_my(struct item **stack){
     double a;
     if (!isEmpty_stack(*stack)) a=pop_stack(stack); else no_enough("MUL",n);
     if (a<0) {printf("Argument of SQRT is less than zero"); exit(0);} //НЕКОРРЕКТНОЕ ЗАКРЫТИЕ
-    push_stack(stack, a);   // !!!!SQRT!!!!
+    push_stack(stack, sqrt(a));   // !!!!SQRT!!!!
     return 0;
 }
 

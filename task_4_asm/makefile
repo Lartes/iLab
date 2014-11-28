@@ -4,7 +4,7 @@ CC = gcc
 CFALGS = -Wall
 
 proc_1: main.o functions_proc.o stack.o
-	$(CC) $^ -o $@
+	$(CC) $^ -lm -o $@
 
 asm: asm.o functions_asm.o
 	$(CC) $^ -o $@
