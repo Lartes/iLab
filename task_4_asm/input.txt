@@ -1,8 +1,8 @@
 push 1
 pop_ax
-push 5
+push 3
 pop_bx
-push 1
+push 2
 pop_cx
 
 push_ax
@@ -59,16 +59,16 @@ jl :D<0
 	push_ax
 	push 2
 	mul
+	push_dx
+	sqrt
 	push_bx
 	push -1
 	mul
-	push_dx
-	sqrt
 	sub
 	div
 	out
 	end
-D<0:
+D<0: 
 push NAN
 out
 end

@@ -5,8 +5,8 @@ void stop(FILE* input, char output_name[20], double *input_data, double *input_d
         fclose(input);
     remove(output_name);
     if (input_data0==NULL)
-        free(input_data0);
-    else free(input_data);
+        free(input_data);
+    else free(input_data0);
     delete_stack(stack);
     delete_stack(stack_func);
     exit(0);
@@ -192,10 +192,10 @@ int cmp(struct item **stack){
 
 double *ret(struct item **stack, double *input_data0){
     static int n=0;
-    int pointer;
+    long int pointer;
 
     n++;
     if (isEmpty_stack(*stack)) no_enough("RET",n);
-    pointer=pop_stack(stack);
+    pointer=(long int)pop_stack(stack);
     return input_data0+pointer-1;
 }

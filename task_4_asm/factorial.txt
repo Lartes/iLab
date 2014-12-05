@@ -1,0 +1,22 @@
+push 5
+out
+call :fact
+out
+end
+
+fact:
+pop_ax
+push_ax
+push_ax
+push -1
+add
+pop_ax
+push_ax
+jnz :51
+ret
+51:
+push_ax
+out
+call :fact
+mul
+ret

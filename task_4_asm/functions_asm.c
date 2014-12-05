@@ -82,11 +82,12 @@ int jumpDISASM(FILE* input, FILE* output, struct label *mas_label, int size){
     n++;
     double input_data_d;
 
-    if (fread(&input_data_d,sizeof(double),1,input)>0)
+    if (fread(&input_data_d,sizeof(double),1,input)>0){
+    printf("%d\n",input_data_d);
         if (strcmp(label_addres(mas_label,size,(int)input_data_d),"-1"))
             fprintf(output,":%s\n",label_addres(mas_label,size,(int)input_data_d));
         else
-            fprintf(output,"%lf\n",input_data_d);
+            fprintf(output,"%lf\n",input_data_d);}
     else
         {printf("Incorrect command argument(%d)\n",n); return 0;}
     return 1;

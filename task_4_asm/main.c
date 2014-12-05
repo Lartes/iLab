@@ -5,13 +5,6 @@
 
 #define stop stop(input,output_name,input_data,input_data0,&stack,&stack_func)
 
-// отрицательные корни
-// !!!!SQRT!!!!
-// !!!!SQRT!!!!
-// !!!!SQRT!!!!
-// !!!!SQRT!!!!
-// !!!!SQRT!!!!
-
 int main(int argv, char* argc[]){ //ПРОВЕРКА ОШИБОК
 
     //initialization
@@ -56,6 +49,7 @@ int main(int argv, char* argc[]){ //ПРОВЕРКА ОШИБОК
         if (i>=size) input_data=(double*)realloc(input_data,size+=100);
     }
     fclose(input);
+    input=NULL;
     input_data0=input_data;
     if (input_data[i-1]!=END && input_data[i-1]!=RET)
         {printf("End of file with program is incorrect\n");  stop;} //incorrect completion of the program
