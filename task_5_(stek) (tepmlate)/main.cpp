@@ -1,7 +1,10 @@
+#include<iostream>
 #include<stdio.h>
 #include<stdlib.h>
 #include<stdbool.h>
 #include"main.h"
+
+using namespace std;
 
 enum{
     PUSH=1,
@@ -14,26 +17,26 @@ int main(){
     Cstack<int> one;  //initialization is required for assert
     int new_element, user_choise;
     do{
-    printf("************\n");
-    printf("1 - Push\n");
-    printf("2 - Pop\n");
-    printf("3 - Get count\n");
-    printf("4 - Exit\n");
-    printf("************\n");
-    scanf("%d", &user_choise);
+    cout<<"************\n";
+    cout<<"1 - Push\n";
+    cout<<"2 - Pop\n";
+    cout<<"3 - Get count\n";
+    cout<<"4 - Exit\n";
+    cout<<"************\n";
+    cin >> user_choise;
     switch (user_choise){
     case PUSH: printf("Enter element\n");
             scanf("%d",&new_element);
-            one.push_stack(new_element);
+            one.push(new_element);
             break;
-    case POP: if (!one.isEmpty_stack()){
-                printf("_________________%d\n", one.pop_stack());
+    case POP: if (!one.isEmpty()){
+                cout<<"element="<<one.pop()<<endl;
                 }
             else{
-                printf("_________________Stack is empty\n");
+                cout<<"_________________Stack is empty\n";
             }
             break;
-    case COUNT: printf("______%d\n",one.getCount_stack());
+    case COUNT: cout<<"count="<<one.getCount()<<endl;
                 break;
     case EXIT: break;
     };

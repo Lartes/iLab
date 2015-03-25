@@ -10,10 +10,10 @@ class Cstack{
     public:
         Cstack();
         ~Cstack();
-        void push_stack(T element); //arguments: the address of pointer to the top item, element you want to add
-        T pop_stack(); //arguments: the address of pointer to the top item; result: element from item
-        bool isEmpty_stack(); //arguments: the address of the top item; result: true if empty, false if not empty
-        int getCount_stack(); //arguments: the address of the top item; result: count of elements
+        void push(T element); //arguments: the address of pointer to the top item, element you want to add
+        T pop(); //arguments: the address of pointer to the top item; result: element from item
+        bool isEmpty(); //arguments: the address of the top item; result: true if empty, false if not empty
+        int getCount(); //arguments: the address of the top item; result: count of elements
     private:
         struct item{
             T value; //element
@@ -25,24 +25,25 @@ class Cstack{
 
 template <typename T>
 Cstack<T>::Cstack(){
-    begin_=new struct item;
-    begin_->value=0;
-    begin_->next=NULL;
+    begin_=NULL;
     count_=0;
 }
 
 template <typename T>
-void Cstack<T>::push_stack(T element){
+void Cstack<T>::push(T element){
     struct item *temp=begin_;
     begin_=new struct item;
     begin_->value=element;
-    begin_->next=temp;
+    if (temp==NULL)
+        begin_->next=NULL;
+    else
+        begin_->next=temp;
     count_++;
 }
 
 template <typename T>
-T Cstack<T>::pop_stack(){
-    assert((!isEmpty_stack()));  //when assert showed, you know what the error
+T Cstack<T>::pop(){
+    assert((!isEmpty()));  //when assert showed, you know what the error
     T element=begin_->value;
     struct item *temp=begin_;
     begin_=begin_->next;
@@ -54,22 +55,21 @@ T Cstack<T>::pop_stack(){
 template <typename T>
 Cstack<T>::~Cstack(){
     struct item* temp=NULL;
-    while (begin_->next!=NULL){
+    while (begin_!=NULL){
         temp=begin_;
         begin_=begin_->next;
         delete temp;
     };
-    delete begin_;
-    begin_=NULL;
 }
 
 template <typename T>
-bool Cstack<T>::isEmpty_stack(){
-    if (begin_->next==NULL) return true; else return false;
+bool Cstack<T>::isEmpty(){
+    if (begin_==NULL) return true;
+    return false;
 }
 
 template <typename T>
-int Cstack<T>::getCount_stack(){
+int Cstack<T>::getCount(){
     return count_;
 }
 
