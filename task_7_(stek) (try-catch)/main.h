@@ -6,20 +6,18 @@
 #ifndef stackIlab
 #define stackIlab
 
-//#define throw(a,b) {myexc one((a),(b)); throw one;}
+#define throw(a,b) {myexc one((a),(b)); throw one;}
 
 class myexc{
     public:
-        myexc();
         myexc(char name[10], int error);
         ~myexc();
         void what();
     private:
+        myexc();
         char name_[10];
         int error_;
 };
-
-myexc::myexc(){}
 
 myexc::myexc(char name[10], int error){
     strcpy(name_,name);
@@ -71,7 +69,7 @@ void Cstack<T>::push(T element){
     try{
     struct item *temp=begin_;
     begin_=new struct item;
-    if (begin_==NULL) {myexc one("push",2); throw one;}
+    if (begin_==NULL) throw ("push",2);
     begin_->value=element;
     if (temp==NULL)
         begin_->next=NULL;
@@ -89,7 +87,7 @@ void Cstack<T>::push(T element){
 template <typename T>
 T Cstack<T>::pop(){
     try{
-    if (begin_==NULL) {myexc one("push",1); throw one;}  //when assert showed, you know what the error
+    if (begin_==NULL) throw ("pop",1);  //when assert showed, you know what the error
     T element=begin_->value;
     struct item *temp=begin_;
     begin_=begin_->next;
