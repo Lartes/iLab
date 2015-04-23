@@ -71,12 +71,14 @@ Data_T& CArray <Data_T>::operator[] (int n){//& - ссылка
 
 template <typename Data_T>
 CArray<Data_T>& CArray <Data_T>::operator+ (CArray<Data_T>& a){
-    int i, flag=0;
+    int i, flag=0, maximum=a.fsize();
     if (size_>a.fsize()){
+        maximum=size_;
         flag=1;
     }
     CArray* temp;
-    temp=new CArray<Data_T>(10);
+    temp=new CArray<Data_T>(maximum);
+    temp->size_=maximum;
     if (flag){
         for (i=0;i<a.fsize();i++){
             (*temp)[i]=data_[i]+a[i];
